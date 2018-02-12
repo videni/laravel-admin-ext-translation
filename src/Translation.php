@@ -16,6 +16,12 @@ class Translation extends Extension
         Admin::extend('translation', __CLASS__);
     }
 
+    public static function getCustomLocales()
+    {
+        return ['zh-CN' => '简体中文','en' =>'English'];
+    }
+
+
     public static function getLocales()
     {
         $exists = array_map(function ($directory) {

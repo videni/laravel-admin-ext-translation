@@ -31,8 +31,8 @@ class TranslationController
         }
 
         return Admin::content(function (Content $content) {
-            $content->header('Translations');
-            $content->description('Translation list.');
+            $content->header(trans('admin.translation.header'));
+            $content->description(trans('admin.translation.desc'));
 
             $content->body($this->grid());
         });
@@ -48,7 +48,7 @@ class TranslationController
     public function edit($id)
     {
         return Admin::content(function (Content $content) use ($id) {
-            $content->header('Edit translations');
+            $content->header(trans('admin.translation.header'));
 
             list($group, $key) = explode('.', $id);
 
@@ -103,7 +103,7 @@ class TranslationController
     public function create()
     {
         return Admin::content(function (Content $content) {
-            $content->header('Create new translation');
+            $content->header(trans('admin.translation.header'));
 
             $form = new \Encore\Admin\Widgets\Form(compact('group', 'key'));
 
@@ -112,7 +112,7 @@ class TranslationController
 
             $form->divider();
 
-            $form->hasMany('locales', function (Form\NestedForm $form) {
+            $form->hasMany('locales', 'translations', function (Form\NestedForm $form) {
                 $form->select('locale', 'Locale')->options($this->getLocaleOptions());
                 $form->textarea('value', 'Text');
             });
@@ -120,6 +120,7 @@ class TranslationController
             $form->action(route('translations.store'));
 
             $content->body(new Box('', $form));
+
         });
     }
 
@@ -169,8 +170,8 @@ class TranslationController
 
                 $changed = in_array(TranslationModel::STATUS_CHANGED, $status);
 
-                return $changed ? '<span class="label label-danger">changed</span>'
-                    : '<span class="label label-success">saved</span>';
+                return $changed ? sprintf('<span class="label label-danger">%s</span>', trans('admin.changed'))
+                    : sprintf('<span class="label label-success">%s</span>', trans('admin.saved'));
             });
 
             $grid->updated_at();
@@ -221,8 +222,8 @@ class TranslationController
 
             $form->divider();
 
-            $form->display('created_at', 'Created At');
-            $form->display('updated_at', 'Updated At');
+            $form->display('created_at', trans('admin.created_at'));
+            $form->display('updated_at', trans('admin.updated_at'));
         });
     }
 

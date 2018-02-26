@@ -50,7 +50,7 @@ class TranslationController
         return Admin::content(function (Content $content) use ($id) {
             $content->header(trans('admin.translation.header'));
 
-            list($group, $key) = explode('.', $id);
+            list($group, $key) = explode('.', $id, 2);
 
             $locales = $this->getLocaleOptions();
 
@@ -62,7 +62,7 @@ class TranslationController
 
     public function update($id, Request $request)
     {
-        list($group, $key) = explode('.', $id);
+        list($group, $key) = explode('.', $id, 2);
 
         $translations = TranslationModel::where(compact('group', 'key'))->get();
 
@@ -229,7 +229,7 @@ class TranslationController
 
     public function destroy($id)
     {
-        list($group, $key) = explode('.', $id);
+        list($group, $key) = explode('.', $id, 2);
 
         if (TranslationModel::where(compact('group', 'key'))->delete()) {
             return response()->json([

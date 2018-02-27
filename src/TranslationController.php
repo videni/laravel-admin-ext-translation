@@ -246,6 +246,8 @@ class TranslationController
 
     protected function getLocaleOptions()
     {
+        // var_dump(Translation::getCustomLocales());die();
+        return Translation::getCustomLocales();
         $locales = Translation::getLocales();
 
         return array_combine($locales, $locales);

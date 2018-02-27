@@ -22,5 +22,6 @@ class TranslationServiceProvider extends ServiceProvider
                 Console\ResetCommand::class,
             ]);
         }
+        Translation::boot();
     }
 }

@@ -7,18 +7,29 @@ use Encore\Admin\Extension;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
+
 class Translation extends Extension
 {
     public static function boot()
     {
         static::registerRoutes();
-
         Admin::extend('translation', __CLASS__);
+        LocaleModel::boot();
     }
 
     public static function getCustomLocales()
     {
-        return ['zh-CN' => '简体中文','en' =>'English'];
+        // return ['zh-CN' => '简体中文','en' =>'English'];
+        // $locales =  self::getLocales();
+
+        // return array_combine($locales, $locales);
+        $trans = static::config('locales_trans', []);
+        return $trans;
+        // var_dump($trans);
+        return collect(self::getLocales())->mapWithKeys(function($x)use($trans){
+            // var_dump($x);
+            return [$x => array_get($trans, $x, $x)];
+        })->toArray();
     }
 
 
@@ -145,6 +156,7 @@ class Translation extends Extension
 
                 /* @var \Illuminate\Routing\Router $router */
                 $router->resource('translations', 'Encore\Admin\Translation\TranslationController');
+                $router->resource('locales', 'Encore\Admin\Translation\LocaleController');
             });
         });
     }
@@ -155,7 +167,9 @@ class Translation extends Extension
     public static function import()
     {
         parent::createMenu('Translations', 'translations', 'fa-lang');
+        parent::createMenu('Locales', 'locales', 'fa-lang');
 
         parent::createPermission('Translations', 'ext.translations', 'translations*');
+        parent::createPermission('Locales', 'ext.locales', 'locales*');
     }
 }

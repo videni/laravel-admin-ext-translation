@@ -13,13 +13,11 @@ class Translation extends Extension
     {
         static::registerRoutes();
         Admin::extend('translation', __CLASS__);
-
-        LocaleModel::boot();
     }
 
     public static function getCustomLocales()
     {
-        $trans = static::config('locales_trans', []);
+        $trans = LocaleModel::geAllLocales();
 
         return empty($trans)? self::getLocales(): $trans;
     }

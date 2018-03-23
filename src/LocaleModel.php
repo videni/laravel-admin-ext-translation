@@ -22,25 +22,20 @@ class LocaleModel extends Model
         $this->setTable(config('admin.extensions.translation.locales_table', 'laravel_locales'));
     }
 
-    public static function boot()
+    public static function geAllLocales()
     {
-        parent::boot();
-        $locales = [];
-        $locales_trans = [];
-
-        $locales = array_flatten(static::select('code')
-            ->get()
-            ->toarray());
-        $locales_trans = static::select(['code', 'name'])
+        return  static::select(['code', 'name'])
             ->get()
             ->mapWithKeys(function ($row) {
                 return [$row->code => $row->name];
             })
-            ->toarray();
+            ->toArray();
+    }
 
-        config([
-            'admin.extensions.translation.locales' => $locales,
-            'admin.extensions.translation.locales_trans' => $locales_trans,
-        ]);
+    public static function getAllLocaleCodes()
+    {
+        return array_flatten(static::select('code')
+            ->get()
+            ->toArray());
     }
 }

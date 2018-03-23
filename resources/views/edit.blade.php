@@ -75,7 +75,7 @@
 
                                             <select class="form-control locales-select" style="width: 100%;" name="values[{{$translation->id}}][locale]"  >
                                                 @foreach($locales as $value => $locale)
-                                                    <option value="{{$value}}" {{ ($translation->locale == $locale) ? 'selected' : '' }}>{{$locale}}</option>
+                                                    <option value="{{$value}}" {{ ($translation->locale == $value) ? 'selected' : '' }}>{{$locale}}</option>
                                                 @endforeach
                                             </select>
                                         </div>

@@ -25,21 +25,22 @@ class LocaleModel extends Model
     public static function boot()
     {
         parent::boot();
-        try {
-            $locales = [];
-            $locales_trans = [];
-            $locales = array_flatten(static::select('code')->get()->toarray());
-            $locales_trans = static::select(['code', 'name'])->get()->mapWithKeys(function($row){
+        $locales = [];
+        $locales_trans = [];
+
+        $locales = array_flatten(static::select('code')
+            ->get()
+            ->toarray());
+        $locales_trans = static::select(['code', 'name'])
+            ->get()
+            ->mapWithKeys(function ($row) {
                 return [$row->code => $row->name];
-            })->toarray();
-            // dd($locales, $locales_trans);
-            config([
-                'admin.extensions.translation.locales' => $locales,
-                'admin.extensions.translation.locales_trans' => $locales_trans,
-            ]);
-            // dd(Translation::config('locales'), Translation::config('locales_trans'));
-        } catch (\Exception $e) {
-            // safely ignore this loading error when no db connection available
-        }
+            })
+            ->toarray();
+
+        config([
+            'admin.extensions.translation.locales' => $locales,
+            'admin.extensions.translation.locales_trans' => $locales_trans,
+        ]);
     }
 }

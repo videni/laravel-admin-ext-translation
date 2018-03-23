@@ -7,29 +7,21 @@ use Encore\Admin\Extension;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-
 class Translation extends Extension
 {
     public static function boot()
     {
         static::registerRoutes();
         Admin::extend('translation', __CLASS__);
+
         LocaleModel::boot();
     }
 
     public static function getCustomLocales()
     {
-        // return ['zh-CN' => '简体中文','en' =>'English'];
-        // $locales =  self::getLocales();
-
-        // return array_combine($locales, $locales);
         $trans = static::config('locales_trans', []);
-        return $trans;
-        // var_dump($trans);
-        return collect(self::getLocales())->mapWithKeys(function($x)use($trans){
-            // var_dump($x);
-            return [$x => array_get($trans, $x, $x)];
-        })->toArray();
+
+        return empty($trans)? self::getLocales(): $trans;
     }
 
 
@@ -132,9 +124,11 @@ class Translation extends Extension
                 $translations = $groups[$group];
                 $path = resource_path('lang/'.$locale.'/'.$group.'.php');
                 $output = "<?php\n\nreturn ".var_export($translations, true).";\n";
+
                 app('files')->put($path, $output);
             }
         }
+
 
         TranslationModel::where('group', $group)->update(['status' => TranslationModel::STATUS_SAVED]);
     }

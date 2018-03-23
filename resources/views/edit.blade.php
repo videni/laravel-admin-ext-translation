@@ -72,9 +72,10 @@
                                         <label for="locales[{{$translation->id}}][locale]" class="col-sm-2 control-label">Locale</label>
                                         <div class="col-sm-8">
                                             <input type="hidden" name="values[{{$translation->id}}][locale]"/>
+
                                             <select class="form-control locales-select" style="width: 100%;" name="values[{{$translation->id}}][locale]"  >
-                                                @foreach($locales as $locale)
-                                                    <option value="{{$locale}}" {{ ($translation->locale == $locale) ? 'selected' : '' }}>{{$locale}}</option>
+                                                @foreach($locales as $value => $locale)
+                                                    <option value="{{$value}}" {{ ($translation->locale == $locale) ? 'selected' : '' }}>{{$locale}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
